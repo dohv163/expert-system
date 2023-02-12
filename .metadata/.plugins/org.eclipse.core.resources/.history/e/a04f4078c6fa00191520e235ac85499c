@@ -1,0 +1,63 @@
+package hechuandoan.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import hechuandoan.io.DocFileTrieuChung;
+import hechuandoan.model.TrieuChung;
+
+public class TrieuChungUI extends JFrame{
+	DefaultTableModel dtmTC;
+	JTable tblTC;
+	JButton btnThem,btnSua,btnXoa;
+	ArrayList<TrieuChung> dsTC=new ArrayList<TrieuChung>();
+	protected TrieuChungUI(String title) {
+		super(title);
+		addControll();
+		addEvent();
+	}
+
+	private void addEvent() {
+		Container conn=getContentPane();
+		conn.setLayout(new BorderLayout());
+		dtmTC=new DefaultTableModel();
+		dtmTC.addColumn("Mã Triệu Chứng");
+		dtmTC.addColumn("Tên Triệu Trứng");
+		tblTC=new JTable(dtmTC);
+		JScrollPane scTC=new JScrollPane(tblTC, 
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS
+				); 
+		conn.add(scTC,BorderLayout.NORTH);
+	}
+	protected void hienThiTrieuchung() {
+		dtmTC.setRowCount(0);
+		dsTC=doc.docTrieuChung("Data/TrieuChung.txt");
+		for (TrieuChung trieuChung : dsTC) {
+			Vector<String> vec=new Vector<String>();
+			vec.add(trieuChung.getMaTC());
+			vec.add(trieuChung.getTenTC());
+			dtmTC.addRow(vec);
+		}
+	}
+	
+	private void addControll() {
+		hienThiTrieuchung();
+		
+	}
+	protected void showWindows() {
+		this.setSize(800, 400);
+		this.setVisible(true);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+	}
+}

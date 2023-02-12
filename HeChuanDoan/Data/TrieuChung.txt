@@ -1,0 +1,36 @@
+M1;Mí mắt sưng
+M2;Mí mắt bị ngứa
+M3;Mí hơi đỏ
+M4;Có khối tụ trong mắt cỡ hạt gạo
+M5;Giác mạc biến dạng gần như thành hình nón
+M6;Mắt hơi đỏ
+M7;Nhìn ra nắng bị chói, đau
+M8;Mắt bị viêm sâu bên trong
+M9;Thị lực kém
+M10;Mắt đỏ
+M11;Mắt bị ngứa
+M12;Nhìn bị mờ
+M13;Mắt bị mỏi
+M14;Chảy nước mắt
+M15;Nhạy cảm với ánh sáng
+M16;Chỉ nhìn được xa
+M17;Đau mắt trầm trọng
+M18;Buồn nôn và nôn
+M19;Xáo trộn thị giác trong môi trường ánh sáng yếu
+M20;Quầng đỏ quanh mắt
+M21;Mờ mắt ở khoảng cách đọc thông thường
+M22;Mệt mỏi hoặc đau đầu khi đọc sách
+M23;Không phân biệt được một số màu sắc
+M24;Hình ảnh nhìn xa bị mờ
+M25;Chỉ nhìn được gần
+M26;Nheo mắt khi nhìn xa
+M27;Hay dụi mắt
+M28;Lờ mờ thấy các vật ở khoảng cách gần
+M29;Đau nhức quanh vùng mắt
+M30;Đau đầu sau khi đọc sách
+M31;Khó khan trong nhận diện màu sắc
+M32;Nhìn đường thẳng bị lệch
+M33;Không nhìn rõ đồ vật trong ánh sang mờ
+M34;Nhìn một vật thành hai
+M35;Màu sắc xung quanh nhạt dần
+

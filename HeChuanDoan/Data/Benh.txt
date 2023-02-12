@@ -1,0 +1,17 @@
+B1;Bệnh lẹo mắt 
+B2;Bệnh giác mạc hình nón
+B3;Bệnh viêm màng bồ đào
+B4;Bệnh tang nhãn áp
+B5;Bệnh đau mắt đỏ
+B6;Dị ứng mắt
+B7;Bệnh lý khô mắt
+B8;Cận thị
+B9;Viễn thị
+B10;Thoái hóa điểm vàng
+B11;Bệnh đục thủy tinh thể
+B12;Bệnh võng mạc tiêu đường
+B13;Bênh tang nhã áp
+B14;Bệnh viêm màng bồ đào
+B15;Lão thị
+B16;Bệnh mù màu
+B17;Bệnh viêm loét giác mạc

@@ -1,0 +1,163 @@
+package hechuandoan.controller;
+
+public class ThuatToan {
+	ArrayList<Luat> RULE=new ArrayList<Luat>();
+	ArrayList<String> GT=new ArrayList<String>();
+	ArrayList<String> KL=new ArrayList<String>();
+	public ArrayList<Luat> SAT=new ArrayList<Luat>();
+	ArrayList<String> TG=new ArrayList<String>();
+	
+	// DOC LUAT
+	public  void docLuat(String path) {
+		try {
+			FileInputStream fis=new FileInputStream(path);
+			InputStreamReader isr=new InputStreamReader(fis, "UTF-8");
+			BufferedReader br=new BufferedReader(isr);
+			String line=br.readLine();
+			String arr[];
+			while ( line !=null) {
+	            arr=line.split("->");
+	            RULE.add(new Luat(arr[0],arr[1]));
+	            line=br.readLine();
+			}
+			br.close();
+			isr.close();
+			fis.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void thuatToan(){
+		docLuat("D:\\Documents\\luat.txt");
+		String giaThiet="a,b,k";
+		 String arrGiaThiet[]=giaThiet.split(",");
+         GT.addAll(Arrays.asList(arrGiaThiet));
+         String ketLuat="m";
+         String arrKetLuat[]=ketLuat.split(",");
+         KL.addAll(Arrays.asList(arrKetLuat));
+		System.out.printf("Tập giả thiết ban đầu: %s",GT);
+		System.out.println("");
+		System.out.printf("Tập kết luận ban đầu: %s",KL);
+		System.out.println("");
+		System.out.println("Tập luật");
+		for (Luat string : RULE) {
+			System.out.println(string.toString());
+		}
+		Luat r=new Luat();
+		TG=GT;
+		loc();
+		int i=0;
+	while(kt_KL_Thuoc_TG()==false && SAT.size()!=0) {
+			System.out.println("----------------Bước thứ "+(i+1)+"--------------------");
+			System.out.println("Tập SAT: ");
+			for (Luat luat : SAT) {
+				System.out.print(luat.toString()+";");
+			}
+			System.out.println("");
+			r=SAT.get(0); // LẤY 1 LUẬT TRONG SAT
+			System.out.println("luật r: "+r.toString());
+			if (!kiemTraTrung(r.vp)) // kiem tra xem vp cua r da thuoc TG chua neu chua thi them vp va TG
+			{
+				TG.add(r.vp);
+			}
+			System.out.println("Tập TG ở bước "+(i+1)+": "+TG);
+			loatLuatKhoiRULE(r); // tuong ung voi buoc rule=rule\{r} trong giai thuat
+			loc(); // lay tap SAT tuong ung voi buoc SAT=LOC(RULE,TG) trong giai thuat
+			System.out.println("Tập luật RULE");
+			for (Luat luat : RULE) {
+				System.out.print(luat.toString()+";");
+			}
+			System.out.println("");
+			i++;
+		}
+		System.out.println("============================================");
+		if (kt_KL_Thuoc_TG()) {
+			System.out.println("Thành công : Tập kết luận: "+KL+ " tập giả thiết : "+TG);
+			
+		}else {
+			System.out.println("Không thành công : Tập kết luật "+KL+"tập giả thiết "+TG);
+		}
+		
+	} 
+	// 
+	 public void loatLuatKhoiRULE(Luat r)
+	    {
+	        int dem=-1;
+	        for(int i=0;i<RULE.size();i++)
+	        if(r.vp.equals(RULE.get(i).vp) && r.vt.equals(RULE.get(i).vt))
+	        {
+	            dem=i;
+	            break;
+	        }
+	        if(dem!=-1)
+	        {
+	            RULE.remove(dem);
+	        }
+	    }
+	    //---------lay tap SAT
+	   public void loc()
+	  {
+	       SAT.clear();
+	        for(int j=0;j<RULE.size();j++)
+	        {
+	               if(kiemtraTHVa(RULE.get(j).vt))
+	               {
+	                    SAT.add(RULE.get(j));
+	                }
+	        }
+	   }
+	   //------------------------------------
+	    // vi du neu a va b da thuoc GT thi a.b cung phai thuoc TG
+	    public boolean kiemtraTHVa(String str)
+	    {
+	       String arr[]=str.split(",");
+	       int dem=0;
+	       for(int i=0;i<arr.length;i++)
+	       {
+	           for(int j=0;j<TG.size();j++)
+	           {
+	               if(arr[i].equals(TG.get(j)))
+	               {
+	                   dem++;
+	               }
+	           }
+	       }
+	       if(dem==arr.length)
+	            return true;
+	       return false;
+	    }
+	    
+	   //kiem tra xem trong TG da co str chua neu co thi tra ve true
+	   public boolean kiemTraTrung(String str)
+	   {
+	       for(int i=0;i<TG.size();i++)
+	       {
+	           if(TG.get(i).equals(str))
+	           {
+	               return true;
+	           }
+	       }
+	       return false;
+	   }
+	   
+	   //--Kiem tra xem KL co thuoc TG khong
+	   public boolean kt_KL_Thuoc_TG()
+	   {
+	       //neu dem bang do dai cua tap ket luan thi KL thuoc TG
+	       int dem=0;
+	       for(int i=0;i<KL.size();i++)
+	       {
+	           for(int j=0;j<TG.size();j++)
+	           {
+	               if(KL.get(i).equals(TG.get(j)))
+	               {
+	                   dem++;
+	               }
+	           }
+	       }
+	       if(dem==KL.size())
+	            return true;
+	       return false;
+	   }
+	
+}

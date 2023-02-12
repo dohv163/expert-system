@@ -1,0 +1,286 @@
+package hechuandoan.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.GapContent;
+
+import code.thuat.toan.SuyDienTienTest;
+import code.thuat.toan.ThuatToan;
+import hechuandoan.controller.LayBenhTheoMa;
+import hechuandoan.io.DocBenh;
+import hechuandoan.io.DocFileTrieuChung;
+import hechuandoan.model.Benh;
+import hechuandoan.model.TrieuChung;
+
+public class HeChuanDoanUI extends JFrame{
+	ArrayList<TrieuChung> dsTC=new ArrayList<TrieuChung>();
+	ArrayList<Benh> dsBenh=new ArrayList<Benh>();
+	SuyDienTienTest s=new SuyDienTienTest();
+	DefaultTableModel dtmTC,dtmTC1,dtmKQ,dtmBenh,dtmBenh1;
+	JTable tblTC,tblTC1,tblKQ,tblBenh,tblBenh1;
+	JButton btnTC,btnTC1,btnChuanDoan,btnLuat,btnSuyDien,btnTrieuChung;
+	public HeChuanDoanUI(String title) {
+		super(title);
+		addControls();
+		addEvents();
+	}
+	protected void hienThiTrieuchung() {
+		dtmTC.setRowCount(0);
+		DocFileTrieuChung doc=new DocFileTrieuChung();
+		dsTC=doc.docTrieuChung("../TrieuChung.txt");
+		for (TrieuChung trieuChung : dsTC) {
+			Vector<String> vec=new Vector<String>();
+			vec.add(trieuChung.getMaTC());
+			vec.add(trieuChung.getTenTC());
+			dtmTC.addRow(vec);
+		}
+	}
+	
+	private void addControls() {
+		Container conn=getContentPane();
+		JPanel pnLeft=new JPanel();
+		JPanel pnRight=new JPanel();
+		JPanel pnCenter=new JPanel();
+		
+		pnLeft.setPreferredSize(new Dimension(400, 0));
+		pnLeft.setLayout(new BorderLayout());
+		JPanel pnTitle1=new JPanel();
+		JLabel lblTitle1=new JLabel("Danh Sách Triệu Chứng");
+		//pnTitle1.add(lblTitle1);
+		
+		
+		
+		pnLeft.add(pnTitle1,BorderLayout.NORTH);
+		dtmTC=new DefaultTableModel();
+		dtmTC.addColumn("Mã triệu chứng");
+		dtmTC.addColumn("Tên Triệu Chứng");
+		tblTC=new JTable(dtmTC);
+		tblTC.getColumnModel().getColumn(0).setPreferredWidth(15);
+		tblTC.getColumnModel().getColumn(1).setPreferredWidth(200);
+		JScrollPane sc=new JScrollPane(tblTC,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		pnLeft.add(sc,BorderLayout.CENTER);
+		
+		TitledBorder borderTrieuChung=new 
+				TitledBorder(BorderFactory.createLineBorder(Color.GRAY),
+						"Danh sách triệu chứng");
+		pnLeft.setBorder(borderTrieuChung);
+		
+		// het phan ben trai
+		
+		
+		pnCenter.setPreferredSize(new Dimension(50, 0));
+		pnCenter.setLayout(new BorderLayout());
+		JPanel pnTopCenter=new JPanel();
+		JPanel pnTitleCenter=new JPanel();
+		JLabel lblTitleCenter=new JLabel("Thêm Triệu Chứng");
+		pnTitleCenter.add(lblTitleCenter);
+		pnCenter.add(pnTitleCenter,BorderLayout.NORTH);
+		JPanel pnButtonTC=new JPanel();
+		pnButtonTC.setLayout(new BoxLayout(pnButtonTC, BoxLayout.Y_AXIS));
+		btnTC=new JButton(">> Chọn"); btnTC.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnTC1=new JButton("<<   Hủy"); btnTC1.setAlignmentX(Component.CENTER_ALIGNMENT);
+		pnButtonTC.add(btnTC); 
+		pnButtonTC.add(btnTC1);
+		pnCenter.add(pnButtonTC);
+		
+		// het phan center
+		
+		JSplitPane sp=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pnLeft,pnCenter);
+		conn.setLayout(new BorderLayout());
+		conn.add(sp,BorderLayout.WEST);
+		conn.add(pnRight,BorderLayout.CENTER);
+		
+		pnRight.setLayout(new BorderLayout());
+		pnRight.setPreferredSize(new Dimension(400, 600));
+		JPanel pnTitle=new JPanel();
+		JLabel lblTitle=new JLabel("Triệu chứng mắc phải");
+		pnTitle.add(lblTitle);
+		//pnRight.add(pnTitle,BorderLayout.NORTH);
+		
+		TitledBorder borderTrieuChung_1=new 
+				TitledBorder(BorderFactory.createLineBorder(Color.GRAY),
+						"Danh sách triệu chứng");
+		pnRight.setBorder(borderTrieuChung_1);
+		
+		JPanel pnTopOfRight=new JPanel();
+		pnTopOfRight.setPreferredSize(new Dimension(0, 300));
+		pnTopOfRight.setLayout(new BorderLayout());
+		dtmTC1=new DefaultTableModel();
+		dtmTC1.addColumn("Mã triệu chứng");
+		dtmTC1.addColumn("Tên Triệu Chứng");
+		tblTC1=new JTable(dtmTC1);
+		JScrollPane scTC1=new JScrollPane(tblTC1,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		pnTopOfRight.setLayout(new BorderLayout());
+		pnTopOfRight.add(scTC1);
+
+		
+		// het phan top right
+		
+		JPanel pnBottomOfRight=new JPanel();
+		pnBottomOfRight.setPreferredSize(new Dimension(0, 300));
+		pnBottomOfRight.setLayout(new BorderLayout());
+		JPanel pnButton=new JPanel();
+		pnButton.setLayout(new BoxLayout(pnButton, BoxLayout.X_AXIS));
+		btnChuanDoan=new JButton("Chuẩn Đoán");
+		btnLuat=new JButton("Luật");
+		btnSuyDien=new JButton("Giải thích");
+		btnTrieuChung=new JButton("Triệu chứng");
+		
+		btnChuanDoan.setIcon(new ImageIcon("Icon/tich.jpg"));
+		btnLuat.setIcon(new ImageIcon("Icon/icon-menu.png"));
+		btnTrieuChung.setIcon(new ImageIcon("Icon/Close.png"));
+		btnSuyDien.setIcon(new ImageIcon("Icon/Question-mark-icon.png"));
+		
+		pnButton.add(btnChuanDoan);
+		pnButton.add(btnLuat);
+		pnButton.add(btnSuyDien);
+		pnButton.add(btnTrieuChung);
+		pnBottomOfRight.add(pnButton,BorderLayout.NORTH);
+		
+		TitledBorder titleButton=new TitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Lựa chọn");
+		pnButton.setBorder(titleButton);
+		
+		JPanel pnKetQua=new JPanel();
+		dtmKQ=new DefaultTableModel();
+		dtmKQ.addColumn("Mã Bệnh");
+		dtmKQ.addColumn("Tên Bệnh");
+		tblKQ=new JTable(dtmKQ);
+		JScrollPane scKQ=new JScrollPane(tblKQ,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		
+		TitledBorder titleKetQua=new TitledBorder(BorderFactory.createLineBorder(Color.GRAY),
+				"Kết quả chuẩn đoán");
+		
+		scKQ.setBorder(titleKetQua);
+		pnBottomOfRight.add(scKQ,BorderLayout.CENTER);
+		
+		
+		JSplitPane spRight=new JSplitPane(JSplitPane.VERTICAL_SPLIT, pnTopOfRight, pnBottomOfRight);
+		pnRight.add(spRight,BorderLayout.CENTER);
+	}
+
+	private void addEvents() {
+		hienThiTrieuchung();
+		//hienThiBenh();
+		btnTrieuChung.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TrieuChungUI tc=new TrieuChungUI("Triệu Chứng");
+				tc.showWindows();
+				
+			}
+		});
+		
+		  btnTC.addActionListener(new ActionListener() {
+				 @Override public void actionPerformed(ActionEvent e) { int
+				 rowSelected=tblTC.getSelectedRow(); if (rowSelected == -1)
+				 JOptionPane.showMessageDialog(null, "Mời chọn triệu chứng"); String
+				 maTC=tblTC.getValueAt(rowSelected, 0)+""; String
+				 tenTC=tblTC.getValueAt(rowSelected, 1)+""; TrieuChung tc=new TrieuChung();
+				 ArrayList<TrieuChung> dsTCChon=new ArrayList<TrieuChung>();
+				 tc.setMaTC(maTC);
+				 tc.setTenTC(tenTC); 
+				 dsTCChon.add(tc); 
+				 for (TrieuChung trieuChung : dsTCChon)
+					 {
+						 Vector<String> vec=new Vector<String>(); 
+						 vec.add(trieuChung.getMaTC());
+						 vec.add(trieuChung.getTenTC());
+						 dtmTC1.addRow(vec);
+					 } 
+				 } 
+		  	});
+		 
+		  btnTC1.addActionListener(new ActionListener() {
+		 
+			 @Override public void actionPerformed(ActionEvent e) { int
+			  rowSelected=tblTC1.getSelectedRow(); if (rowSelected ==-1)
+			 JOptionPane.showMessageDialog(null, "Mời chọn triệu chứng");
+			  dtmTC1.removeRow(rowSelected);
+			  
+			 } 
+		 });
+	
+		btnChuanDoan.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String> dsTC=new ArrayList<String>();
+				int soDong=tblTC1.getRowCount();
+				for (int i = 0; i < soDong; i++) {
+					dsTC.add(tblTC1.getValueAt(i, 0)+"");
+				}
+				
+				// dua ket qua ra bang kq
+				
+				dtmKQ.setRowCount(0);
+				LayBenhTheoMa layBenh=new LayBenhTheoMa();
+				for (Benh benh : s.thuatToan(dsTC)) {
+					Vector<String> vec=new Vector<String>();
+					vec.add(benh.getMaBenh());
+					vec.add(benh.getTenBenh());
+					dtmKQ.addRow(vec);
+				}
+			}
+		});
+		btnSuyDien.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SuyDienUI sd=new SuyDienUI("Suy diễn tiến");
+				sd.showWindow();
+				sd.addEvent();
+				
+			}
+		});
+		btnLuat.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LuatUI luat=new LuatUI("Danh sách luật");
+				luat.showWindow();
+			}
+		});
+		
+	}
+	
+	public void showWindow() {
+		this.setSize(1020, 600);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setVisible(true);
+	}
+}
